@@ -1,45 +1,8 @@
 namespace SpriteKind {
     export const fish = SpriteKind.create()
 }
-// 8 Concepts Learned (Pick the 8 you used, delete the others):
-// 
-// -Sprites
-// 
-// -Sprite Position (coordinates: x and y)
-// 
-// -Controller (dx) and move mySprite with buttons
-// 
-// -overlap Events / sprite kind
-// 
-// -"Spawning" sprites: create and on created
-// 
-// -random
-// 
-// -Displaying numbers (1, 2, 3) as a string ("123")
-// 
-// -score and life
-// 
-// -countdown
-// 
-// -stay in screen and ghost
-// 
-// -set image
-// 
-// -sprite say
-// 
-// -splash
-// 
-// Key Features (List the Key Features You Will Need For Your Game, replace examples)
-// 
-// - ex. Playable Sprite
-// 
-// - ex. player can move up/down left/right
-// 
-// - ex. player can collide with enemy
-// 
-// - ex. enemy decreases player life
-scene.onHitWall(SpriteKind.fish, function (sprite, location) {
-    sprite.image.flipX()
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.fish, function (sprite, otherSprite) {
+	
 })
 scene.setBackgroundImage(img`
     5555555555555559999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -163,20 +126,38 @@ scene.setBackgroundImage(img`
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     `)
+let shark = sprites.create(img`
+    ....................ccfff...........
+    ..........fffffffffcbbbbf...........
+    .........fbbbbbbbbbfffbf............
+    .........fbb111bffbbbbff............
+    .........fb11111ffbbbbbcff..........
+    .........f1cccc11bbcbcbcccf.........
+    ..........fc1c1c1bbbcbcbcccf...ccccc
+    ............c3331bbbcbcbccccfccddbbc
+    ...........c333c1bbbbbbbcccccbddbcc.
+    ...........c331c11bbbbbcccccccbbcc..
+    ..........cc13c111bbbbccccccffbccf..
+    ..........c111111cbbbcccccbbc.fccf..
+    ...........cc1111cbbbfdddddc..fbbcf.
+    .............cccffbdbbfdddc....fbbf.
+    ..................fbdbbfcc......fbbf
+    ...................fffff.........fff
+    `, SpriteKind.Enemy)
 let fish1 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . 3 3 3 3 3 3 3 3 . . . 3 
-    . . . 3 3 3 3 3 3 3 3 3 3 . 3 3 
-    . . 3 3 3 f 3 3 3 3 3 3 3 3 3 3 
-    . . 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-    . . 3 3 3 3 f 3 3 3 3 3 3 3 3 3 
-    . . . f f f 3 3 3 3 3 3 3 . 3 3 
-    . . . . 3 3 3 3 3 3 3 3 . . . 3 
-    . . . . . . . . . . . . . . . . 
+    . . . 3 3 3 3 3 3 3 3 . . . . 3 
+    . 3 3 3 3 3 3 3 3 3 3 3 . . 3 3 
+    3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+    3 3 f 3 3 3 3 3 3 3 3 3 3 3 3 3 
+    3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+    3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+    f f f f 3 3 3 3 3 3 3 3 3 3 3 3 
+    3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+    . 3 3 3 3 3 3 3 3 3 3 3 . . 3 3 
+    . . . 3 3 3 3 3 3 3 3 . . . . 3 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -185,16 +166,16 @@ let fish2 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . 2 2 2 2 2 2 2 2 . . . 2 
-    . . . 2 2 2 2 2 2 2 2 2 2 . 2 2 
-    . . 2 2 2 f 2 2 2 2 2 2 2 2 2 2 
-    . . 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    . . 2 2 2 2 f 2 2 2 2 2 2 2 2 2 
-    . . . f f f 2 2 2 2 2 2 2 . 2 2 
-    . . . . 2 2 2 2 2 2 2 2 . . . 2 
-    . . . . . . . . . . . . . . . . 
+    . . . 5 5 5 5 5 5 5 5 . . . . 5 
+    . 5 5 5 5 5 5 5 5 5 5 5 . . 5 5 
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    5 5 f 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    f f f f 5 5 5 5 5 5 5 5 5 5 5 5 
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    . 5 5 5 5 5 5 5 5 5 5 5 . . 5 5 
+    . . . 5 5 5 5 5 5 5 5 . . . . 5 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -203,16 +184,16 @@ let fish3 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . a a a a a a a a . . . a 
-    . . . a a a a a a a a a a . a a 
-    . . a a a f a a a a a a a a a a 
-    . . a a a a a a a a a a a a a a 
-    . . a a a a f a a a a a a a a a 
-    . . . f f f a a a a a a a . a a 
-    . . . . a a a a a a a a . . . a 
-    . . . . . . . . . . . . . . . . 
+    . . . 2 2 2 2 2 2 2 2 . . . . 2 
+    . 2 2 2 2 2 2 2 2 2 2 2 . . 2 2 
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+    2 2 f 2 2 2 2 2 2 2 2 2 2 2 2 2 
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+    f f f f 2 2 2 2 2 2 2 2 2 2 2 2 
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+    . 2 2 2 2 2 2 2 2 2 2 2 . . 2 2 
+    . . . 2 2 2 2 2 2 2 2 . . . . 2 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -221,16 +202,16 @@ let fish4 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . 5 5 5 5 5 5 5 5 . . . 5 
-    . . . 5 5 5 5 5 5 5 5 5 5 . 5 5 
-    . . 5 5 5 f 5 5 5 5 5 5 5 5 5 5 
-    . . 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    . . 5 5 5 5 f 5 5 5 5 5 5 5 5 5 
-    . . . f f f 5 5 5 5 5 5 5 . 5 5 
-    . . . . 5 5 5 5 5 5 5 5 . . . 5 
-    . . . . . . . . . . . . . . . . 
+    . . . a a a a a a a a . . . . a 
+    . a a a a a a a a a a a . . a a 
+    a a a a a a a a a a a a a a a a 
+    a a f a a a a a a a a a a a a a 
+    a a a a a a a a a a a a a a a a 
+    a a a a a a a a a a a a a a a a 
+    f f f f a a a a a a a a a a a a 
+    a a a a a a a a a a a a a a a a 
+    . a a a a a a a a a a a . . a a 
+    . . . a a a a a a a a . . . . a 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -239,16 +220,16 @@ let fish5 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . 4 4 4 4 4 4 4 4 . . . 4 
-    . . . 4 4 4 4 4 4 4 4 4 4 . 4 4 
-    . . 4 4 4 f 4 4 4 4 4 4 4 4 4 4 
-    . . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
-    . . 4 4 4 4 f 4 4 4 4 4 4 4 4 4 
-    . . . f f f 4 4 4 4 4 4 4 . 4 4 
-    . . . . 4 4 4 4 4 4 4 4 . . . 4 
-    . . . . . . . . . . . . . . . . 
+    . . . 7 7 7 7 7 7 7 7 . . . . 7 
+    . 7 7 7 7 7 7 7 7 7 7 7 . . 7 7 
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+    7 7 f 7 7 7 7 7 7 7 7 7 7 7 7 7 
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+    f f f f 7 7 7 7 7 7 7 7 7 7 7 7 
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+    . 7 7 7 7 7 7 7 7 7 7 7 . . 7 7 
+    . . . 7 7 7 7 7 7 7 7 . . . . 7 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -463,24 +444,16 @@ weed2.setPosition(60, 95)
 weed3.setPosition(100, 95)
 weed4.setPosition(25, 95)
 // fish1.vx = 15
-fish2.vx = 15
-fish3.vx = 15
-fish4.vx = 15
-fish5.vx = 15
+fish1.vx = -15
+// fish1.vx = 15
+fish2.vx = -15
+fish3.vx = -15
+fish4.vx = -15
+fish5.vx = -15
+// fish1.setBounceOnWall(true)
+fish1.setBounceOnWall(true)
 // fish1.setBounceOnWall(true)
 fish2.setBounceOnWall(true)
 fish3.setBounceOnWall(true)
 fish4.setBounceOnWall(true)
 fish5.setBounceOnWall(true)
-game.onUpdate(function () {
-    if (fish1.x < 150) {
-        // fish1.image.flipX()
-        fish1.vx = 15
-
-    } else if(fish1.x > 1)
-    {
-        fish1.image.flipX()
-        fish1.vx = -15
-
-    }
-})
