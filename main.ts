@@ -1,9 +1,60 @@
 namespace SpriteKind {
     export const fish = SpriteKind.create()
 }
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.fish, function (sprite, otherSprite) {
-	
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    shark.vy += -10
 })
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.fish, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    pause(100)
+    otherSprite.startEffect(effects.warmRadial)
+    info.changeScoreBy(1)
+})
+controller.down.onEvent(ControllerButtonEvent.Released, function () {
+    shark.vy = 0
+})
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    shark.vx += -10
+})
+controller.right.onEvent(ControllerButtonEvent.Released, function () {
+    shark.vx = 0
+    shark.image.flipX()
+})
+controller.left.onEvent(ControllerButtonEvent.Released, function () {
+    shark.vx = 0
+})
+sprites.onOverlap(SpriteKind.Food, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    sprite.destroy()
+    pause(100)
+    shark.startEffect(effects.fire)
+    sprite.startEffect(effects.fire)
+    pause(2000)
+    game.over(false)
+})
+info.onCountdownEnd(function () {
+    game.over(false)
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    shark.vx += 10
+    shark.image.flipX()
+})
+controller.up.onEvent(ControllerButtonEvent.Released, function () {
+    shark.vy = 0
+})
+controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+    shark.vy += 10
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    pause(100)
+    otherSprite.startEffect(effects.bubbles)
+    pause(2000)
+    game.over(false)
+})
+let shark: Sprite = null
+info.startCountdown(10)
+info.setScore(0)
 scene.setBackgroundImage(img`
     5555555555555559999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
     5555555555555559999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -126,7 +177,83 @@ scene.setBackgroundImage(img`
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     `)
-let shark = sprites.create(img`
+let mine1 = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . f f f f f f f . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+let mine2 = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . f f f f f f f . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+let mine3 = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . f f f f f f f . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+let mine_4 = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . f f f f f f f . . . . . 
+    . . . . . . f f f . . . . . . . 
+    . . . . . f . f . f . . . . . . 
+    . . . . f . . f . . f . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Food)
+mine1.setPosition(125, randint(30, 90))
+mine2.setPosition(35, randint(30, 90))
+mine_4.setPosition(125, randint(30, 90))
+mine3.setPosition(35, randint(30, 90))
+shark = sprites.create(img`
     ....................ccfff...........
     ..........fffffffffcbbbbf...........
     .........fbbbbbbbbbfffbf............
@@ -435,6 +562,7 @@ let weed4 = sprites.create(img`
     ......8768......
     `, SpriteKind.Player)
 fish1.setPosition(randint(4, 150), randint(30, 90))
+fish1.setPosition(randint(4, 150), randint(30, 90))
 fish2.setPosition(randint(4, 150), randint(30, 90))
 fish3.setPosition(randint(4, 150), randint(30, 90))
 fish4.setPosition(randint(4, 150), randint(30, 90))
@@ -457,3 +585,11 @@ fish2.setBounceOnWall(true)
 fish3.setBounceOnWall(true)
 fish4.setBounceOnWall(true)
 fish5.setBounceOnWall(true)
+game.onUpdate(function () {
+    if (info.score() > 4) {
+        game.over(true)
+    }
+    if (shark.y < 30) {
+        game.over(false)
+    }
+})
